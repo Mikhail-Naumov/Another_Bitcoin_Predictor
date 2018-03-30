@@ -5,27 +5,29 @@ A time series analysis using LSTM RNNs and ARIMA.
 ## How does it work?
 After pulling from the API at [alphavantage.co](alphavantage.co) and preliminary cleaning, we see the raw Bitcoin values. 
 <p align="center">
-  <img src=“/examples/raw_1.png" width="400">
+  <img src=“examples/raw_1.png" width="400">
 </p>
 
 By adjusting for a weekly rolling average we barely see a change in shape, so it is too early for that adjustment.
 <p align="center">
-  <img src=“/examples/raw_2.png" width="400">
+  <img src=“examples/raw_2.png" width="400">
 </p>
  
 ## Autocorrelation
 As in all time series trends have a level of autocorrelation where today’s value is dependent yesterday’s. So we will look to see how heavily these data correlate with itself (auto)
 <p align="center">
-  <img src=“/examples/ac_1.png" width="400">
+  <img src=“examples/ac_1.png" width="400">
 </p>
+
 <p align="center">
-  <img src=“/examples/ac_2.png" width="400">
+  <img src=“examples/ac_2.png" width="400">
 </p>
 
 ## Time Adjusted
 by moving the window from the first day Bitcoin was launched to Oct 25, 2017 we have a far cleaner picture of its patterns. 
+
 <p align="center">
-  <img src=“/examples/after.png" width="400">
+  <img src=“examples/after.png" width="400">
 </p>
 
 This window change was picked as it:
@@ -38,7 +40,7 @@ Bitcoin's very low value could be highly due to its nature being unknown to the 
 ## Seasonal Decomposition
 
 <p align="center">
-  <img src=“/examples/season.png" width="400"> 
+  <img src=“examples/season.png" width="400"> 
 </p>
 
 Here we see:
