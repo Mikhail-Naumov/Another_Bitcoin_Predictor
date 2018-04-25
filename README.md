@@ -55,9 +55,16 @@ Using a Recurrent Neural Network with an architecture of:
   - Loss : mean absolute error
   - Epochs : 100
 
-![lstm](https://user-images.githubusercontent.com/36013672/38142891-23c39f4a-340c-11e8-9495-b43548a037bd.png)
+The training data consisted of all the data between the starting point (Oct-25-2017) and March-2018
+The testing/predictive data extened past March and into April-25-2018
 
-That was determined by grid-searching across variable layer depths and activators (Relu, Leaky Relu, & Sigmoid)
+Our model on the training data
+![training](https://user-images.githubusercontent.com/36013672/39268703-9986497a-489e-11e8-911d-44395225bae0.png)
+
+Our model on the testing data
+![testing](https://user-images.githubusercontent.com/36013672/39268704-99950546-489e-11e8-8b48-340966a306ed.png)
+
+The LSTM RNN's architecture was determined by grid-searching across variable layer depths and activators (Relu, Leaky Relu, & Sigmoid)
 
 ## Future Directions
 - Reddit comments as another predictor.
