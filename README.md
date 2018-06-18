@@ -11,15 +11,6 @@ By adjusting for a weekly rolling average we barely see a change in shape, so it
 
 ![raw_2](https://user-images.githubusercontent.com/36013672/38142893-23e0c552-340c-11e8-9999-6ec0fdde6b03.png)
  
-## Autocorrelation
-As in all time series trends have a level of autocorrelation where today’s value is dependent yesterday’s. So we will look to see how heavily these data correlate with itself (auto)
-
-![ac_1](https://user-images.githubusercontent.com/36013672/38142886-239f0bd0-340c-11e8-834f-d95d29378d5d.png)
-
-
-![ac_2](https://user-images.githubusercontent.com/36013672/38142888-23acd378-340c-11e8-8df2-3ce46d9690d2.png)
-
-
 ## Time Adjusted
 by moving the window from the first day Bitcoin was launched to Oct 25, 2017 we have a far cleaner picture of its patterns. 
 
@@ -29,6 +20,15 @@ This window change was picked as it:
 - As to avoid giving more weight during which Bitcoin was worthless, which while it changes the data, but I felt it was relivant because it show the times during which Bitcoin truly existed.
 
 - Bitcoin's very low value could be highly due to its nature being unknown to the majority of the public, after that arbitrary point, it became more well known and thus more active
+
+
+## Autocorrelation
+As in all time series analysis have a level of autocorrelation wherein today’s value is dependent yesterday’s. So we will look to see how heavily these data correlate with itself.
+
+![ac_1](https://user-images.githubusercontent.com/36013672/38142886-239f0bd0-340c-11e8-834f-d95d29378d5d.png)
+
+
+![ac_2](https://user-images.githubusercontent.com/36013672/38142888-23acd378-340c-11e8-8df2-3ce46d9690d2.png)
 
 
 
@@ -55,9 +55,16 @@ Using a Recurrent Neural Network with an architecture of:
   - Loss : mean absolute error
   - Epochs : 100
 
-![lstm](https://user-images.githubusercontent.com/36013672/38142891-23c39f4a-340c-11e8-9495-b43548a037bd.png)
+The training data consisted of all the data between the starting point (Oct-25-2017) and March-2018
+The testing/predictive data extened past March and into April-25-2018
 
-That was determined by grid-searching across variable layer depths and activators (Relu, Leaky Relu, & Sigmoid)
+Our model on the training data
+![training](https://user-images.githubusercontent.com/36013672/39268703-9986497a-489e-11e8-911d-44395225bae0.png)
+
+Our model on the testing data
+![testing](https://user-images.githubusercontent.com/36013672/39268704-99950546-489e-11e8-8b48-340966a306ed.png)
+
+The LSTM RNN's architecture was determined by grid-searching across variable layer depths and activators (Relu, Leaky Relu, & Sigmoid)
 
 ## Future Directions
 - Reddit comments as another predictor.
