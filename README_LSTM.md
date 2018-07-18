@@ -5,8 +5,8 @@ An explaination of:
 - [Implimentation of Multi vs Univariate models](#implimentation-of-multi-vs-univariate-models)
 - [Usage in predicting Bitcoin Values](#usage-in-predicting-bitcoin-values)
 
-## What are LSTM RNNs
+### What are LSTM RNNs
 
-## Implimentation of Multi vs Univariate models
+### Implimentation of Multi vs Univariate models
 
-## Usage in predicting Bitcoin Values
+### Usage in predicting Bitcoin Values
