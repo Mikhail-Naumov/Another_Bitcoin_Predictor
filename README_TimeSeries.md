@@ -23,6 +23,8 @@ An explaination of:
 
 ![full_decomp](https://user-images.githubusercontent.com/36013672/42940628-2bbcb506-8b28-11e8-8832-2c719860c12d.png)
 
+![screen shot 2018-07-18 at 8 17 08 pm](https://user-images.githubusercontent.com/36013672/42914301-a27f0d80-8ac7-11e8-9b9b-d99d21e171fd.png)
+
 ![part_prophet_1](https://user-images.githubusercontent.com/36013672/42940627-2badddf6-8b28-11e8-8aaf-bae41acd705f.png)
 
 ![part_prophet_2](https://user-images.githubusercontent.com/36013672/42940624-2b6f8286-8b28-11e8-8bd2-da845882e730.png)
