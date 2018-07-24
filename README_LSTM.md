@@ -17,7 +17,7 @@ An explaination of:
 
 ![uni_train_history](https://user-images.githubusercontent.com/36013672/43160378-f8dcd268-8f52-11e8-9b0c-db3f65c083a6.png)
 
-![uni_pred](https://user-images.githubusercontent.com/36013672/43160380-f8fe16b2-8f52-11e8-9034-48d7eb5f7721.png)
+![screen shot 2018-07-24 at 3 13 53 pm](https://user-images.githubusercontent.com/36013672/43160820-43d48e04-8f54-11e8-84e2-365fd2e5dde4.png)
 * Left: Predicted values compared to True
 * Right: Comparing that difference between predicted percent variation from Prediction and True, closer to 0 means closer to actual daily variation exhibited by True BTC values
 
