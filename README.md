@@ -33,12 +33,11 @@ After pulling from the API at [alphavantage.co](alphavantage.co) and preliminary
 
 ![raw_1](https://user-images.githubusercontent.com/36013672/38142892-23cd6de0-340c-11e8-82d5-c9ebc5768bc0.png)
 
-Additionally by using the API [PRAW](https://github.com/praw-dev/praw) to facilitate Reddit Comment aggregation.
+[PRAW](https://github.com/praw-dev/praw) to facilitate Reddit Comment aggregation.
 
 
 #### Rolling Average
-*-----------*
-Because of how much day to day values may vary, rolling average are used to look at the general trends by looking at the trends by day week month & year
+Because of day to day variation, rolling averages are used to look at the general trends by day, week, month & year
 
 ![raw_2](https://user-images.githubusercontent.com/36013672/42914188-f7724a7e-8ac6-11e8-883a-9c2e257b0131.png)
 
@@ -97,32 +96,58 @@ Here we see:
 | [LSTM Notebook](./BitCoin_LSTM.ipynb) | Notebook with Process & Model |
 | [ARIMA & Prophet Notebook](./BitCoin_fbProphet.ipynb) | Notebook with Process and Model |
 
-#### Univariate LSTM RNN
+The training data consisted of all the data between the starting point (Oct-25-2017) and March-2018
 
-Using a Recurrent Neural Network with an architecture of:
+The testing/predictive data extended past March and into April-25-2018
 
-- 36 Neuron Dense Layer
-- 4 Memory LSTM Layer
-- (0.1) Dropout Layer
+![split](https://user-images.githubusercontent.com/36013672/43160377-f8cac122-8f52-11e8-8421-35539b278923.png)
+
+#### LSTM RNN
+
+To maintain uniformity between Univariate & Multivariate LSTMs the underlying structure is the same:
+
+- 128 Memory LSTM Layer
 - 1 Neuron Dense Layer
   - Batch : 16
   - Optimizer : adam
   - Activator : relu
   - Loss : mean absolute error
-  - Epochs : 100
+  - Epochs : 50
 
-The training data consisted of all the data between the starting point (Oct-25-2017) and March-2018
-The testing/predictive data extended past March and into April-25-2018
+Univariate on testing data
+- Predicting daily opening bell variations, using trends in daily variations
 
-Our model on the training data
-![training](https://user-images.githubusercontent.com/36013672/39268703-9986497a-489e-11e8-911d-44395225bae0.png)
+Multivariate on the testing data
+- Predicting daily opening  bell variations, use of trends in:
+  - Reddit Sentiment (both Positive & Negative, Scaled & Unscaled)
+  - Daily opening, volume, cap ... variations
+  
+Univariate Predictions:
 
-Our model on the testing data
-![testing](https://user-images.githubusercontent.com/36013672/39268704-99950546-489e-11e8-8b48-340966a306ed.png)
+![screen shot 2018-07-24 at 3 13 53 pm](https://user-images.githubusercontent.com/36013672/43160820-43d48e04-8f54-11e8-84e2-365fd2e5dde4.png)
 
-The LSTM RNN’s architecture was determined by grid-searching across variable layer depths and activators (Relu, Leaky Relu, & Sigmoid)
+
+Multivariate Predictions:
+
+![multi_pred](https://user-images.githubusercontent.com/36013672/43160379-f8eb714c-8f52-11e8-84aa-c64772cdae3b.png)
+
+
+Difference between Univariate & Multivariate:
+
+![compare_pred](https://user-images.githubusercontent.com/36013672/43160382-f964664c-8f52-11e8-8502-a47f5d16ee44.png)
+![mae](https://user-images.githubusercontent.com/36013672/43160381-f92fbdfc-8f52-11e8-8905-6c1e10caffe4.png)
+
+
 
 #### Prophet
+
+![screen shot 2018-07-18 at 9 05 44 pm](https://user-images.githubusercontent.com/36013672/42940629-2bd0c49c-8b28-11e8-8cd8-d3b8365b018b.png)
+
+![part_prophet_1](https://user-images.githubusercontent.com/36013672/42940627-2badddf6-8b28-11e8-8aaf-bae41acd705f.png)
+
+![part_prophet_2](https://user-images.githubusercontent.com/36013672/42940624-2b6f8286-8b28-11e8-8bd2-da845882e730.png)
+
+![part_prophet_decomp](https://user-images.githubusercontent.com/36013672/42940623-2b591d8e-8b28-11e8-88a5-b86006e9d3d2.png)
 
 
 
