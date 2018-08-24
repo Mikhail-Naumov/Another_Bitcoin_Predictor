@@ -2,7 +2,7 @@
  "cells": [
   {
    "cell_type": "code",
-   "execution_count": 37,
+   "execution_count": 54,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -16,17 +16,19 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 65,
+   "execution_count": 55,
    "metadata": {},
    "outputs": [],
    "source": [
     "#do I want to update from a preexisting csv?\n",
-    "update = False"
+    "update = True\n",
+    "#Which subreddit?\n",
+    "subreddit = 'Bitcoin'"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 66,
+   "execution_count": 51,
    "metadata": {},
    "outputs": [],
    "source": [
@@ -35,69 +37,77 @@
     "\n",
     "def date_to_epoch(df_date):\n",
     "    pattern = '%Y-%m-%d %H:%M:%S'\n",
-    "    return int(time.mktime(time.strptime(df_date, pattern)))"
+    "    return int(time.mktime(time.strptime(df_date, pattern)))\n",
+    "\n",
+    "def rq(moving_date):\n",
+    "    #generates a request before 'moving_date'\n",
+    "    #if update. requests before 'moving' and after 'last_date'\n",
+    "    if update==False:\n",
+    "        r = requests.get(\"https://api.pushshift.io/reddit/search/submission/\"+\n",
+    "             \"?subreddit={}&size=500&\"+\n",
+    "             \"is_video=False&\"\n",
+    "             \"before={}\".format(subreddit,moving_date))\n",
+    "    else:\n",
+    "        r =  requests.get(\"https://api.pushshift.io/reddit/search/submission/\"+\n",
+    "             \"?subreddit={}&size=500&\"+\n",
+    "             \"is_video=False&\"\n",
+    "             \"before={}&after={}\".format(subreddit,moving_date,last_date))\n",
+    "    return r"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 67,
+   "execution_count": 14,
    "metadata": {},
    "outputs": [],
    "source": [
     "if update==True:\n",
     "    #imports previous csv\n",
-    "    df = pd.read_csv('./Data/Reddit_PushShift.csv',index_col=0)    \n",
-    "    \n",
+    "    df_0 = pd.read_csv('./Data/Reddit_{}_PushShift.csv'.format(subreddit),index_col=0)    \n",
     "    #finds 24h before most recent value\n",
-    "    ls_date = date_to_epoch(df.sort_values('date',ascending=False).iloc[0].date)-86400 \n",
+    "    last_date = date_to_epoch(df_0.date.max())-86400 \n",
     "    #reassigns df to df before 24h before last update\n",
     "    #as to assume there may have been changes to 24h posts\n",
-    "    df = df[df['date'] > epoch_to_date(ls_date)]\n",
-    "\n",
-    "    #uses request to fine date before NOW and after (24h before)Last value\n",
-    "    def rq(use):\n",
-    "        return requests.get(\"https://api.pushshift.io/reddit/search/submission/\"+\n",
-    "             \"?subreddit=Bitcoin&size=500&\"+\n",
-    "             \"is_video=False&\"\n",
-    "             \"before={}&after={}\".format(use,ls_date))\n",
-    "    \n",
-    "else:\n",
-    "    df = pd.DataFrame()\n",
-    "    def rq(use):\n",
-    "        return requests.get(\"https://api.pushshift.io/reddit/search/submission/\"+\n",
-    "             \"?subreddit=Bitcoin&size=500&\"+\n",
-    "             \"is_video=False&\"\n",
-    "             \"before={}\".format(use))"
+    "    df_0 = df_0[df_0['date'] > epoch_to_date(last_date)]"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 68,
+   "execution_count": 29,
    "metadata": {},
    "outputs": [
     {
      "name": "stdout",
      "output_type": "stream",
      "text": [
-      "Searching Dates before 2018-08-19 17:05:37\n",
-      "Searching Dates before 2018-08-17 15:42:33\n"
+      "moving_date 2018-08-24 16:45:22\n",
+      "last_date 2018-08-18 14:35:45\n",
+      "500\n",
+      "\n",
+      "moving_date 2018-08-18 14:36:24\n",
+      "last_date 2018-08-18 14:35:45\n",
+      "500\n",
+      "\n"
      ]
     }
    ],
    "source": [
-    "use = round(time.time())\n",
+    "#Starts as 'now', but moves with iteration\n",
+    "moving_date = round(time.time())\n",
     "init = True\n",
     "n_ls = []\n",
+    "df = pd.DataFrame()\n",
     "\n",
     "while (init or len(r.json()['data'])>0):\n",
     "    init = False\n",
-    "    print('Searching Dates before {}'.format(epoch_to_date(use)))\n",
-    "    r = rq(use)\n",
+    "    print('Searching Dates before {}'.format(epoch_to_date(moving_date)))\n",
+    "    print(len(r.json()['data']))\n",
+    "    print()\n",
+    "    \n",
+    "    r = rq(moving_date)\n",
     "    #pushshifts limit is 200r/min\n",
     "    # @ 1.5 sec, we are under 100r/min\n",
     "    time.sleep(1.5)\n",
-    "\n",
-    "    if (len(r.json()['data'])==0 or ls_date>use): break\n",
     "\n",
     "    for sub in r.json()['data']:\n",
     "        n_dic = {}\n",
@@ -108,18 +118,20 @@
     "        n_dic['title'] = sub['title']\n",
     "        n_dic['url'] = sub['url']\n",
     "        n_ls.append(n_dic)\n",
-    "    df = df.append(pd.DataFrame(n_df))\n",
+    "    df = df.append(pd.DataFrame(n_ls))\n",
     "\n",
-    "    use = date_to_epoch(n_ls[-1]['date'])"
+    "    moving_date = date_to_epoch(df.date.min())"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 69,
+   "execution_count": null,
    "metadata": {},
    "outputs": [],
    "source": [
-    "df.to_csv('./Data/Reddit_PushShift.csv')"
+    "if update:\n",
+    "    df = df.append(df_0).sort_values('date',ascending=True)\n",
+    "df.to_csv('./Data/Reddit_{}_PushShift.csv'.format(subreddit))"
    ]
   }
  ],
